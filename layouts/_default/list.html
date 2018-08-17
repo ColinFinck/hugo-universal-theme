@@ -22,8 +22,16 @@
 
                     <div class="col-md-9" id="blog-listing-medium">
 
-                        {{ $paginator := .Paginate (where .Data.Pages "Type" "blog") }}
-                        {{ range $paginator.Pages }}
+                        {{ if eq .Section "blogs" }}
+                            {{ $paginator := .Paginate (where .Data.Pages "Type" "blog") }}
+                            {{ range $paginator.Pages }}
+                        {{ else if eq .Section "project-news" }}
+                            {{ $paginator := .Paginate (where .Data.Pages "Type" "news") }}
+                            {{ range $paginator.Pages }}
+                        {{ else }}
+                            {{ $paginator := .Paginate (where .Data.Pages "Type" in (slice "blog" "news")) }}
+                            {{ range $paginator.Pages }}
+                        {{ end }}
                         <section class="post">
                             <div class="row">
                                 <div class="col-md-4">
